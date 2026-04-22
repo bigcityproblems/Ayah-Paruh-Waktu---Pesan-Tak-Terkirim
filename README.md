@@ -1,20 +1,51 @@
-<div align="center">
-<img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
-</div>
+# Pesan Tak Terkirim
 
-# Run and deploy your AI Studio app
+An archive of things left unsaid between fathers and children. Inspired by the book *Ayah Paruh Waktu*.
 
-This contains everything you need to run your app locally.
+## Features
 
-View your app in AI Studio: https://ai.studio/apps/39b97aba-71e6-4913-87b4-1c247fde67a6
+- **Interactive Archive:** Explore messages from others in a beautiful, minimal grid.
+- **Message Composition:** Write your own message to your father.
+- **Visual Cards:** Generate and download a shareable visual card of your message.
+- **Social Integration:** Smooth transitions and connections to community platforms.
+- **Responsive Design:** Optimized for both mobile and desktop experiences.
 
-## Run Locally
+## Tech Stack
 
-**Prerequisites:**  Node.js
+- **Framework:** [React 19](https://react.dev/)
+- **Build Tool:** [Vite](https://vitejs.dev/)
+- **Animation:** [Motion (formerly Framer Motion)](https://motion.dev/)
+- **Styling:** [Tailwind CSS 4](https://tailwindcss.com/)
+- **Icons:** [Lucide React](https://lucide.dev/)
+- **Screenshotting:** [html2canvas](https://html2canvas.hertzen.com/)
 
+## Getting Started
 
-1. Install dependencies:
-   `npm install`
-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
-3. Run the app:
-   `npm run dev`
+### Prerequisites
+
+- [Node.js](https://nodejs.org/) (v18 or higher recommended)
+- npm or yarn
+
+### Installation
+
+1. Clone the repository:
+   ```bash
+   git clone <repository-url>
+   cd pesan-tak-terkirim
+   ```
+
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
+
+3. Start the development server:
+   ```bash
+   npm run dev
+   ```
+
+4. Open [http://localhost:3000](http://localhost:3000) in your browser.
+
+## Built with AI
+
+This project was built and iterated upon using [Google AI Studio](https://ai.studio).

@@ -16,9 +16,19 @@ interface Submission {
   name: string;
   email: string;
   phone: string;
+  countryCode: string;
   city?: string;
   age?: string;
 }
+
+const COUNTRY_CODES = [
+  { code: '+62', name: 'Indonesia' },
+  { code: '+60', name: 'Malaysia' },
+  { code: '+65', name: 'Singapore' },
+  { code: '+61', name: 'Australia' },
+  { code: '+1', name: 'USA/Canada' },
+  { code: '+44', name: 'UK' },
+];
 
 const ARCHIVE_SEEDS = [
   { text: "Terima kasih sudah selalu ada, walau hanya lewat silent support yang kadang bikin aku bingung sendiri.", city: "Jakarta", age: "26" },
@@ -61,7 +71,79 @@ export default function App() {
     name: '',
     email: '',
     phone: '',
+    countryCode: '+62',
   });
+
+  const isValidEmail = (email: string) => {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  };
+
+  const isValidPhone = (phone: string) => {
+    // Be more forgiving with formatting (spaces, dashes, dots, plus)
+    const cleaned = phone.replace(/[\s\-.\+]/g, '');
+    return /^[0-9]{7,15}$/.test(cleaned);
+  };
+
+  const isFormValid = () => {
+    return formData.name.trim().length > 1 && 
+           isValidEmail(formData.email) && 
+           isValidPhone(formData.phone);
+  };
+
+  // Auto-detect country code from phone input
+  useEffect(() => {
+    const phone = formData.phone.trim();
+    if (!phone) return;
+
+    // Handle numbers starting with + (e.g., +62...)
+    if (phone.startsWith('+')) {
+      const match = COUNTRY_CODES.find(c => phone.startsWith(c.code));
+      if (match) {
+        setFormData(prev => ({
+          ...prev,
+          countryCode: match.code,
+          phone: phone.substring(match.code.length).trim()
+        }));
+      }
+      return;
+    }
+
+    // Handle numbers starting with 00 (e.g., 0062...)
+    if (phone.startsWith('00')) {
+      const phoneWithPlus = phone.replace('00', '+');
+      const match = COUNTRY_CODES.find(c => phoneWithPlus.startsWith(c.code));
+      if (match) {
+        setFormData(prev => ({
+          ...prev,
+          countryCode: match.code,
+          phone: phone.substring(match.code.length + 1).trim()
+        }));
+      }
+      return;
+    }
+
+    // Handle local autofills that might include the country code without plus (e.g., 62812...)
+    // We only do this for longer strings to avoid catching local numbers accidentally
+    if (phone.length > 8) {
+      const matchNoPlus = COUNTRY_CODES.find(c => {
+        const codeNoPlus = c.code.replace('+', '');
+        return phone.startsWith(codeNoPlus) && codeNoPlus.length > 1; // skip +1
+      });
+
+      if (matchNoPlus) {
+        const codeNoPlus = matchNoPlus.code.replace('+', '');
+        // Only strip if the remaining part looks like a valid local number
+        if (phone.length - codeNoPlus.length >= 7) {
+          setFormData(prev => ({
+            ...prev,
+            countryCode: matchNoPlus.code,
+            phone: phone.substring(codeNoPlus.length).trim()
+          }));
+        }
+      }
+    }
+  }, [formData.phone]);
+
   const cardRef = useRef<HTMLDivElement>(null);
 
   // Scroll to top on step change
@@ -126,6 +208,7 @@ export default function App() {
         name: '',
         email: '',
         phone: '',
+        countryCode: '+62',
       });
     }
     setStep(next);
@@ -198,8 +281,9 @@ export default function App() {
                 Ribuan hal tersimpan antara anak dan ayah. Kami sedang mengumpulkannya.
               </p>
               <div className="w-12 border-t-thin mb-8"></div>
-              <p className="text-[12px] text-brand-muted italic mb-10">
-                Satu kalimat dari setiap orang
+              <p className="text-[12px] text-brand-muted italic mb-10 leading-relaxed">
+                Beberapa di antaranya akan kami kirimkan sesuatu —<br />
+                sebagai tanda bahwa pesanmu sudah sampai.
               </p>
               <div>
                 <button
@@ -279,8 +363,11 @@ export default function App() {
 
             <div className="space-y-10">
               <div className="flex flex-col">
-                <label className="text-[10px] uppercase tracking-widest text-brand-muted mb-2 font-medium">NAMA</label>
+                <label htmlFor="name" className="text-[10px] uppercase tracking-widest text-brand-muted mb-2 font-medium">NAMA</label>
                 <input
+                  id="name"
+                  name="name"
+                  autoComplete="name"
                   type="text"
                   placeholder="Nama lengkap kamu"
                   className="bg-transparent border-b-thin focus:border-brand-text outline-none py-2 text-[14px] transition-colors"
@@ -289,24 +376,52 @@ export default function App() {
                 />
               </div>
               <div className="flex flex-col">
-                <label className="text-[10px] uppercase tracking-widest text-brand-muted mb-2 font-medium">EMAIL</label>
+                <label htmlFor="email" className="text-[10px] uppercase tracking-widest text-brand-muted mb-2 font-medium">EMAIL</label>
                 <input
+                  id="email"
+                  name="email"
+                  autoComplete="email"
                   type="email"
                   placeholder="Alamat email aktif"
                   className="bg-transparent border-b-thin focus:border-brand-text outline-none py-2 text-[14px] transition-colors"
                   value={formData.email}
                   onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                 />
+                {!isValidEmail(formData.email) && formData.email.length > 0 && (
+                  <span className="text-[10px] text-red-400 mt-1 uppercase tracking-wider">Format email tidak valid</span>
+                )}
               </div>
               <div className="flex flex-col">
-                <label className="text-[10px] uppercase tracking-widest text-brand-muted mb-2 font-medium">NOMOR HP</label>
-                <input
-                  type="tel"
-                  placeholder="Contoh: 0812xxxx"
-                  className="bg-transparent border-b-thin focus:border-brand-text outline-none py-2 text-[14px] transition-colors"
-                  value={formData.phone}
-                  onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                />
+                <label htmlFor="countryCode" className="text-[10px] uppercase tracking-widest text-brand-muted mb-2 font-medium">NOMOR HP</label>
+                <div className="flex gap-3 items-end">
+                  <select
+                    id="countryCode"
+                    name="countryCode"
+                    autoComplete="tel-country-code"
+                    className="bg-transparent border-b-thin border-brand-border focus:border-brand-text outline-none py-2 text-[14px] transition-colors cursor-pointer appearance-none"
+                    value={formData.countryCode}
+                    onChange={(e) => setFormData({ ...formData, countryCode: e.target.value })}
+                  >
+                    {COUNTRY_CODES.map(c => (
+                      <option key={c.code} value={c.code} className="bg-brand-bg text-brand-text">
+                        {c.code}
+                      </option>
+                    ))}
+                  </select>
+                  <input
+                    id="phone"
+                    name="phone"
+                    autoComplete="tel-national"
+                    type="tel"
+                    placeholder="Contoh: 812xxxx"
+                    className="flex-1 bg-transparent border-b-thin focus:border-brand-text outline-none py-2 text-[14px] transition-colors"
+                    value={formData.phone}
+                    onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                  />
+                </div>
+                {!isValidPhone(formData.phone) && formData.phone.length > 0 && (
+                  <span className="text-[10px] text-red-400 mt-1 uppercase tracking-wider">Format nomor tidak valid</span>
+                )}
               </div>
             </div>
 
@@ -315,7 +430,7 @@ export default function App() {
                 Datamu aman bersama kami.
               </p>
               <button
-                disabled={!formData.name || !formData.email}
+                disabled={!isFormValid()}
                 onClick={() => nextStep('LOADING')}
                 className="bg-brand-text text-brand-bg px-8 py-3 text-[13px] disabled:opacity-30 hover:opacity-90 transition-all duration-200"
               >
@@ -466,12 +581,12 @@ export default function App() {
             transition={transition}
             className="flex flex-col flex-1"
           >
-            <div className="mb-12">
-              <h2 className="serif text-3xl mb-4">Cerita kita tidak berakhir di sini.</h2>
+            <div className="mb-12 text-center">
+              <h2 className="serif text-[28px] mb-4 leading-tight">Cerita kita tidak berakhir di sini.</h2>
               <p className="text-[14px] text-brand-muted mb-4 leading-relaxed">
                 Bagaimana kalau ayahmu juga punya pesan yang tak terkirim?
               </p>
-              <p className="text-[14px] text-brand-muted mb-10 leading-relaxed max-w-[400px]">
+              <p className="text-[14px] text-brand-muted mb-10 leading-relaxed mx-auto max-w-[400px]">
                 Buku ini ditulis untuk menjawab pertanyaan yang jarang berani kita tanyakan.
               </p>
 
@@ -487,7 +602,7 @@ export default function App() {
 
               <div className="w-full h-[0.5px] bg-brand-border opacity-50 mb-12"></div>
 
-              <p className="text-[12px] text-brand-muted mb-8 leading-relaxed italic">
+              <p className="text-[12px] text-brand-muted mb-8 leading-relaxed italic text-center">
                 Ikuti terus perjalanan kami mengumpulkan pesan-pesan yang tak terkirim di platform media sosial.
               </p>
 
