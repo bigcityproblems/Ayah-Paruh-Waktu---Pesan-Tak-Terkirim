@@ -547,7 +547,7 @@ export default function App() {
                   className="w-full bg-white text-brand-bg py-4 rounded-full text-[13px] font-bold tracking-widest uppercase hover:bg-white/90 transition-all shadow-lg"
                   onClick={() => window.open('https://linktr.ee/ayahparuhwaktu', '_blank')}
                 >
-                  Pre-order Sekarang →
+                  Wishlist Buku →
                 </button>
                 <button 
                   className="w-full bg-[#25D366] text-white py-4 rounded-full text-[13px] font-bold tracking-widest uppercase flex items-center justify-center gap-2 hover:opacity-95 transition-all shadow-lg"
