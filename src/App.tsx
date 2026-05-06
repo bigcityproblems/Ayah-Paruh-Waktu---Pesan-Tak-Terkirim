@@ -33,25 +33,47 @@ const ARCHIVE_SEEDS = [
 ];
 
 const PREDETERMINED_CARDS = [
-  "https://i.imgur.com/g5h5GPo.png",
-  "https://i.imgur.com/LusXz2Q.png",
-  "https://i.imgur.com/ofwuItm.png",
-  "https://i.imgur.com/W5QhTaV.png",
-  "https://i.imgur.com/jwCs2GW.png",
-  "https://i.imgur.com/nJSJIXs.png",
-  "https://i.imgur.com/4YNml8n.png",
-  "https://i.imgur.com/RrAOMCi.png",
-  "https://i.imgur.com/40L63Vk.png",
-  "https://i.imgur.com/IjFokz1.png",
-  "https://i.imgur.com/c98euJS.png",
-  "https://i.imgur.com/GWff4TU.png",
-  "https://i.imgur.com/f3BqlPu.png",
-  "https://i.imgur.com/Zwoz2ZB.png",
-  "https://i.imgur.com/TfiUw1C.png",
-  "https://i.imgur.com/Ml4wgpM.png",
-  "https://i.imgur.com/0l8k2oG.png",
-  "https://i.imgur.com/3iFDhUs.png",
-  "https://i.imgur.com/FvVO2To.png",
+  "https://res.cloudinary.com/dkhf63xbe/image/upload/v1778063728/1_iiy33q.png",
+  "https://res.cloudinary.com/dkhf63xbe/image/upload/v1778063728/3_ym3pof.png",
+  "https://res.cloudinary.com/dkhf63xbe/image/upload/v1778063728/2_gp5ygf.png",
+  "https://res.cloudinary.com/dkhf63xbe/image/upload/v1778063728/4_dl3cfa.png",
+  "https://res.cloudinary.com/dkhf63xbe/image/upload/v1778063729/6_xgeu0j.png",
+  "https://res.cloudinary.com/dkhf63xbe/image/upload/v1778063729/5_zg4g50.png",
+  "https://res.cloudinary.com/dkhf63xbe/image/upload/v1778063729/9_xc5rsq.png",
+  "https://res.cloudinary.com/dkhf63xbe/image/upload/v1778063730/10_o3jedn.png",
+  "https://res.cloudinary.com/dkhf63xbe/image/upload/v1778063729/8_jemqfb.png",
+  "https://res.cloudinary.com/dkhf63xbe/image/upload/v1778063730/7_qrugty.png",
+  "https://res.cloudinary.com/dkhf63xbe/image/upload/v1778063730/11_jktikb.png",
+  "https://res.cloudinary.com/dkhf63xbe/image/upload/v1778063731/15_g6a5i6.png",
+  "https://res.cloudinary.com/dkhf63xbe/image/upload/v1778063730/14_lqq7rt.png",
+  "https://res.cloudinary.com/dkhf63xbe/image/upload/v1778063731/13_pga7ii.png",
+  "https://res.cloudinary.com/dkhf63xbe/image/upload/v1778063731/12_iulowz.png",
+  "https://res.cloudinary.com/dkhf63xbe/image/upload/v1778063732/16_kjpqar.png",
+  "https://res.cloudinary.com/dkhf63xbe/image/upload/v1778063733/17_ffjuv4.png",
+  "https://res.cloudinary.com/dkhf63xbe/image/upload/v1778063733/18_pevdyd.png",
+  "https://res.cloudinary.com/dkhf63xbe/image/upload/v1778063734/19_m28tlo.png",
+  "https://res.cloudinary.com/dkhf63xbe/image/upload/v1778063734/20_rrfjxz.png",
+  "https://res.cloudinary.com/dkhf63xbe/image/upload/v1778063735/22_xe1fd9.png",
+  "https://res.cloudinary.com/dkhf63xbe/image/upload/v1778063734/21_vmf8at.png",
+  "https://res.cloudinary.com/dkhf63xbe/image/upload/v1778063735/23_zozs8q.png",
+  "https://res.cloudinary.com/dkhf63xbe/image/upload/v1778063736/24_tluj7e.png",
+  "https://res.cloudinary.com/dkhf63xbe/image/upload/v1778063736/25_pm9gjf.png",
+  "https://res.cloudinary.com/dkhf63xbe/image/upload/v1778063737/26_mmtu6q.png",
+  "https://res.cloudinary.com/dkhf63xbe/image/upload/v1778063737/27_rsd99u.png",
+  "https://res.cloudinary.com/dkhf63xbe/image/upload/v1778063738/28_jltiwm.png",
+  "https://res.cloudinary.com/dkhf63xbe/image/upload/v1778063738/29_q6sb8k.png",
+  "https://res.cloudinary.com/dkhf63xbe/image/upload/v1778063739/31_qcbmc2.png",
+  "https://res.cloudinary.com/dkhf63xbe/image/upload/v1778063739/32_qpngqp.png",
+  "https://res.cloudinary.com/dkhf63xbe/image/upload/v1778063738/30_mug8ts.png",
+  "https://res.cloudinary.com/dkhf63xbe/image/upload/v1778063739/33_xyulpg.png",
+  "https://res.cloudinary.com/dkhf63xbe/image/upload/v1778063740/35_a2wn0q.png",
+  "https://res.cloudinary.com/dkhf63xbe/image/upload/v1778063740/34_xwmbxw.png",
+  "https://res.cloudinary.com/dkhf63xbe/image/upload/v1778063740/36_rec0vl.png",
+  "https://res.cloudinary.com/dkhf63xbe/image/upload/v1778063741/37_hl9sx5.png",
+  "https://res.cloudinary.com/dkhf63xbe/image/upload/v1778063742/39_thuzpg.png",
+  "https://res.cloudinary.com/dkhf63xbe/image/upload/v1778063741/38_dpypjw.png",
+  "https://res.cloudinary.com/dkhf63xbe/image/upload/v1778063742/40_ogustn.png",
+  "https://res.cloudinary.com/dkhf63xbe/image/upload/v1778063742/Prize_k2uvr7.png",
 ];
 
 export default function App() {
@@ -111,8 +133,14 @@ export default function App() {
   const nextStep = (next: Step) => {
     if (next === 'LOADING') {
       // Pick card immediately to start pre-loading while user sees the loading bar
-      const randomIndex = Math.floor(Math.random() * PREDETERMINED_CARDS.length);
-      const url = PREDETERMINED_CARDS[randomIndex];
+      const roll = Math.random();
+      const prizeCard = PREDETERMINED_CARDS[PREDETERMINED_CARDS.length - 1];
+      const standardCards = PREDETERMINED_CARDS.slice(0, -1);
+      
+      const url = roll < 0.05 
+        ? prizeCard 
+        : standardCards[Math.floor(Math.random() * standardCards.length)];
+        
       setSelectedCard(url);
       
       setStep('LOADING');
@@ -128,8 +156,13 @@ export default function App() {
     }
     if (next === 'SUCCESS') {
       if (!selectedCard) {
-        const randomIndex = Math.floor(Math.random() * PREDETERMINED_CARDS.length);
-        setSelectedCard(PREDETERMINED_CARDS[randomIndex]);
+        const roll = Math.random();
+        const prizeCard = PREDETERMINED_CARDS[PREDETERMINED_CARDS.length - 1];
+        const standardCards = PREDETERMINED_CARDS.slice(0, -1);
+        const url = roll < 0.05 
+          ? prizeCard 
+          : standardCards[Math.floor(Math.random() * standardCards.length)];
+        setSelectedCard(url);
       }
     }
     if (next === 'LANDING') {
@@ -429,12 +462,12 @@ export default function App() {
               {/* THE CARD */}
               <div 
                 ref={cardRef}
-                className="aspect-[4/5] w-full max-w-[320px] relative overflow-hidden rounded-lg shadow-2xl"
+                className="w-full max-w-[320px] relative shadow-2xl"
               >
                 <img 
                   src={selectedCard} 
                   alt="Shareable Card" 
-                  className="w-full h-full object-cover"
+                  className="w-full h-auto block"
                   referrerPolicy="no-referrer"
                 />
               </div>
