@@ -567,7 +567,7 @@ export default function App() {
               {/* BOOK COVER IMAGE */}
               <div className="w-full max-w-[280px] mb-8 mx-auto shadow-2xl rounded-sm">
                 <img 
-                  src="https://res.cloudinary.com/dkhf63xbe/image/upload/v1778053561/apwbook_chr7lq.png" 
+                  src="https://res.cloudinary.com/dkhf63xbe/image/upload/v1778144319/apwbook-buku_wu1jpd.png" 
                   alt="Pesan Tak Terkirim" 
                   className="w-full h-auto block"
                   referrerPolicy="no-referrer"
