@@ -206,12 +206,12 @@ export default function App() {
       <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden">
         <img 
           src="https://res.cloudinary.com/dkhf63xbe/image/upload/v1778057561/stars_dlvhj3.svg" 
-          className="absolute -left-[600px] -top-[150px] md:-left-[450px] md:-top-[200px] lg:-left-[400px] w-[800px] h-auto opacity-30 brightness-0 invert"
+          className="absolute -left-[300px] -top-[100px] md:-left-[450px] md:-top-[200px] lg:-left-[400px] w-[800px] h-auto opacity-20 brightness-0 invert"
           alt=""
         />
         <img 
           src="https://res.cloudinary.com/dkhf63xbe/image/upload/v1778057561/stars_dlvhj3.svg" 
-          className="absolute -right-[600px] -bottom-[150px] md:-right-[450px] md:-bottom-[200px] lg:-right-[400px] w-[800px] h-auto opacity-30 brightness-0 invert scale-x-[-1]"
+          className="absolute -right-[300px] -bottom-[100px] md:-right-[450px] md:-bottom-[200px] lg:-right-[400px] w-[800px] h-auto opacity-20 brightness-0 invert scale-x-[-1]"
           alt=""
         />
       </div>
@@ -241,29 +241,28 @@ export default function App() {
             className="flex flex-col items-center justify-center flex-1 text-center py-2"
           >
             <div className="flex flex-col items-center max-w-md">
-              <div className="w-full max-w-[192px] mb-4 mx-auto">
-                <img 
-                  src="https://res.cloudinary.com/dkhf63xbe/image/upload/v1778050290/apwhug_txmpek.svg" 
-                  alt="Feature Visual" 
-                  className="w-full h-auto object-contain"
-                  referrerPolicy="no-referrer"
-                />
+              <div className="mb-12 mt-6">
+                <h2 className="serif text-[42px] leading-[1.1] text-white">
+                  Separuh Waktu<br />
+                  <span className="serif text-[36px] opacity-90 pl-4">Sepenuh Hati.</span>
+                </h2>
+                <p className="text-[18px] text-white/90 mt-6 handwriting lowercase">
+                  Tentang ayah yang hadir — meski tidak selalu utuh.
+                </p>
               </div>
-              <span className="text-[14px] handwriting text-white/80 mb-1 lowercase">
-                Sebuah Arsip —
-              </span>
-              <h1 className="serif text-[38px] leading-tight mb-3 font-normal text-brand-text">
-                Pesan Tak Terkirim
-              </h1>
-              <p className="text-[15px] text-white/90 mb-4 leading-relaxed">
+              
+              <p className="text-[14px] text-white mb-1 leading-relaxed px-6 font-bold">
                 Ribuan hal tersimpan antara anak dan ayah. Kami sedang mengumpulkannya.
               </p>
-              <div className="w-12 border-t-thin border-white/30 mb-4"></div>
-              <p className="text-[12px] text-white/80 italic mb-6 leading-relaxed font-sans">
-                Beberapa di antaranya akan kami kirimkan sesuatu —<br />
-                sebagai tanda bahwa pesanmu sudah sampai.
+              <p className="text-[11px] text-white/80 mb-6 leading-relaxed px-6 italic">
+                Kamu tidak harus mengirimnya. Kamu hanya perlu menuliskannya.
               </p>
-              <div>
+
+              <h1 className="serif text-[32px] leading-tight mb-8 font-normal text-white">
+                Pesan Tak Terkirim
+              </h1>
+
+              <div className="mb-6">
                 <button
                   onClick={() => nextStep('WRITE')}
                   className="border-thin border-white text-white px-10 py-3 text-[13px] rounded-full hover:bg-white hover:text-brand-bg transition-all duration-300 font-medium tracking-wide"
@@ -271,6 +270,11 @@ export default function App() {
                   Tulis milikmu →
                 </button>
               </div>
+
+              <p className="text-[12px] text-white/60 italic leading-relaxed font-sans px-4 w-full max-w-md mx-auto">
+                Beberapa di antaranya akan kami kirimkan sesuatu —<br />
+                sebagai tanda bahwa pesanmu sudah sampai.
+              </p>
             </div>
           </motion.div>
         )}
@@ -428,7 +432,7 @@ export default function App() {
           >
             <div className="w-full max-w-[200px]">
               <div className="mb-6 text-center">
-                <span className="text-[14px] handwriting text-brand-muted lowercase">menghimpun pesan —</span>
+                <span className="text-[14px] handwriting text-white lowercase">menghimpun pesan —</span>
               </div>
               <div className="h-[1px] w-full bg-brand-border relative overflow-hidden">
                 <motion.div 
