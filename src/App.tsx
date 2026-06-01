@@ -15,6 +15,7 @@ interface Submission {
   text: string;
   name: string;
   email: string;
+  phone?: string;
   igHandle?: string;
   tiktokHandle?: string;
   city?: string;
@@ -83,6 +84,7 @@ export default function App() {
     text: '',
     name: '',
     email: '',
+    phone: '',
     igHandle: '',
     tiktokHandle: '',
   });
@@ -170,6 +172,7 @@ export default function App() {
         text: '',
         name: '',
         email: '',
+        phone: '',
         igHandle: '',
         tiktokHandle: '',
       });
@@ -378,6 +381,18 @@ export default function App() {
                   )}
                 </div>
                 <div className="flex flex-col">
+                  <label htmlFor="phone" className="text-[10px] uppercase tracking-widest text-brand-muted mb-2 font-medium">NOMOR TELEPON</label>
+                  <input
+                    id="phone"
+                    name="phone"
+                    type="tel"
+                    placeholder="Contoh: 08123456789"
+                    className="bg-transparent border-b-thin border-brand-border focus:border-brand-text outline-none py-2 text-[14px] transition-colors text-brand-text"
+                    value={formData.phone}
+                    onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                  />
+                </div>
+                <div className="flex flex-col">
                   <label htmlFor="igHandle" className="text-[10px] uppercase tracking-widest text-brand-muted mb-2 font-medium">INSTAGRAM HANDLE</label>
                   <input
                     id="igHandle"
@@ -571,7 +586,7 @@ export default function App() {
               {/* BOOK COVER IMAGE */}
               <div className="w-full max-w-[280px] mb-8 mx-auto shadow-2xl rounded-sm">
                 <img 
-                  src="https://res.cloudinary.com/dkhf63xbe/image/upload/v1778144319/apwbook-buku_wu1jpd.png" 
+                  src="https://res.cloudinary.com/dkhf63xbe/image/upload/v1778053561/apwbook_chr7lq.png" 
                   alt="Pesan Tak Terkirim" 
                   className="w-full h-auto block"
                   referrerPolicy="no-referrer"
@@ -585,12 +600,6 @@ export default function App() {
                   onClick={() => window.open('https://linktr.ee/ayahparuhwaktu', '_blank')}
                 >
                   Wishlist Buku →
-                </button>
-                <button 
-                  className="w-full bg-[#25D366] text-white py-4 rounded-full text-[13px] font-bold tracking-widest uppercase flex items-center justify-center gap-2 hover:opacity-95 transition-all shadow-lg"
-                  onClick={() => window.open('https://wa.me/6281234567890?text=Halo%2C%20saya%20ingin%20klaim%20voucher%20diskon%20buku%20Pesan%20Tak%20Terkirim', '_blank')}
-                >
-                  Voucher Discount (WA) →
                 </button>
               </div>
 
