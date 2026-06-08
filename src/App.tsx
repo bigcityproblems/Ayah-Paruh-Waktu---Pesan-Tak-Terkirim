@@ -88,6 +88,7 @@ export default function App() {
     igHandle: '',
     tiktokHandle: '',
   });
+  const [discountPhone, setDiscountPhone] = useState('');
 
   const isValidEmail = (email: string) => {
     return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
@@ -593,13 +594,32 @@ export default function App() {
                 />
               </div>
 
-              {/* PRIMARY ACTIONS */}
-              <div className="flex flex-col gap-3 mb-10 w-full max-w-[320px] mx-auto">
+              {/* PRIMARY ACTIONS - PHONE NUMBER FOR 12% DISCOUNT */}
+              <div className="w-full max-w-[320px] mx-auto text-left mb-10">
+                <p className="text-[14px] text-white mb-4 leading-relaxed text-center font-sans font-medium">
+                  Masukkan nomor telepon Anda dan nikmati diskon 12%.
+                </p>
+                <div className="flex flex-col mb-4">
+                  <label htmlFor="discountPhone" className="text-[10px] uppercase tracking-widest text-white/50 mb-2 font-medium">Nomor Telepon *</label>
+                  <input
+                    id="discountPhone"
+                    name="discountPhone"
+                    type="tel"
+                    placeholder="Contoh: 08123456789"
+                    className="bg-white/5 border-b-thin border-white/20 focus:border-white focus:bg-white/10 outline-none px-4 py-3 text-[14px] rounded-lg transition-all text-white placeholder-white/30 text-center font-sans tracking-wide"
+                    value={discountPhone}
+                    onChange={(e) => setDiscountPhone(e.target.value)}
+                  />
+                </div>
                 <button 
-                  className="w-full bg-white text-brand-bg py-4 rounded-full text-[13px] font-bold tracking-widest uppercase hover:bg-white/90 transition-all shadow-lg"
-                  onClick={() => window.open('https://linktr.ee/ayahparuhwaktu', '_blank')}
+                  className="w-full bg-[#25D366] text-white py-4 rounded-full text-[13px] font-bold tracking-widest uppercase flex items-center justify-center gap-2 hover:opacity-95 transition-all shadow-lg disabled:opacity-30 disabled:cursor-not-allowed"
+                  disabled={!discountPhone.trim()}
+                  onClick={() => window.open(`https://wa.me/6281234567890?text=Halo%2C%20saya%20ingin%20klaim%20voucher%20diskon%2012%25%20buku%20Pesan%20Tak%20Terkirim.%20Nomor%20telepon%20saya%3A%20${encodeURIComponent(discountPhone.trim())}`, '_blank')}
                 >
-                  Wishlist Buku →
+                  <svg className="w-4 h-4 shrink-0" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946C.06 5.348 5.397.01 12.008.01c3.202.001 6.212 1.246 8.477 3.514 2.261 2.268 3.502 5.282 3.5 8.487-.004 6.657-5.34 11.997-11.953 11.997-2.005-.001-3.973-.503-5.73-1.458L0 24zm6.59-4.846c1.6.95 3.1 1.45 4.8 1.45 5.6 0 10.2-4.5 10.2-10.2c0-2.7-1.1-5.3-3-7.2-1.9-1.9-4.5-2.9-7.2-2.9-5.6 0-10.2 4.5-10.2 10.2 0 1.9.5 3.7 1.5 5.3l-.9 3.4 3.5-.9zM16.5 13.5c-.3-.1-1.6-.8-1.9-.9-.3-.1-.5-.1-.7.2-.2.3-.7.9-.9 1.1-.2.2-.3.2-.6.1-.3-.1-1.2-.5-2.3-1.4-.9-.8-1.5-1.7-1.7-2-.2-.3 0-.5.1-.6s.3-.3.4-.5c.2-.2.2-.3.3-.5.1-.2 0-.4-.1-.5-.1-.1-.7-1.6-.9-2.1-.3-.7-.5-.6-.7-.6h-.6c-.2 0-.5.1-.7.4-.3.3-1 1-1 2.4s1 2.8 1.1 3c.1.2 2 3.1 4.9 4.3.7.3 1.2.5 1.6.6.7.2 1.3.2 1.8.1.6-.1 1.6-.7 1.9-1.3.2-.7.2-1.2.2-1.3-.1-.3-.3-.4-.6-.5z"/>
+                  </svg>
+                  Klaim Diskon via WhatsApp →
                 </button>
               </div>
 
