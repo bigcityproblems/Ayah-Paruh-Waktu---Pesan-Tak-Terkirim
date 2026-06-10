@@ -84,11 +84,23 @@ export default function App() {
     text: '',
     name: '',
     email: '',
-    phone: '',
     igHandle: '',
     tiktokHandle: '',
   });
   const [discountPhone, setDiscountPhone] = useState('');
+  const [countryCode, setCountryCode] = useState('+62');
+  const [showSampleChapter, setShowSampleChapter] = useState(false);
+  const [showVoucherModal, setShowVoucherModal] = useState(false);
+  const [copied, setCopied] = useState(false);
+  const [readingPage, setReadingPage] = useState(1);
+
+  const isValidDiscountPhone = (phone: string) => {
+    const clean = phone.replace(/[^0-9]/g, '');
+    if (countryCode === '+62') {
+      return (clean.startsWith('08') && clean.length >= 10) || (clean.startsWith('8') && clean.length >= 9);
+    }
+    return clean.length >= 7;
+  };
 
   const isValidEmail = (email: string) => {
     return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
@@ -381,18 +393,7 @@ export default function App() {
                     <span className="text-[10px] text-red-500 mt-1 uppercase tracking-wider">Format email tidak valid</span>
                   )}
                 </div>
-                <div className="flex flex-col">
-                  <label htmlFor="phone" className="text-[10px] uppercase tracking-widest text-brand-muted mb-2 font-medium">NOMOR TELEPON</label>
-                  <input
-                    id="phone"
-                    name="phone"
-                    type="tel"
-                    placeholder="Contoh: 08123456789"
-                    className="bg-transparent border-b-thin border-brand-border focus:border-brand-text outline-none py-2 text-[14px] transition-colors text-brand-text"
-                    value={formData.phone}
-                    onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                  />
-                </div>
+
                 <div className="flex flex-col">
                   <label htmlFor="igHandle" className="text-[10px] uppercase tracking-widest text-brand-muted mb-2 font-medium">INSTAGRAM HANDLE</label>
                   <input
@@ -577,12 +578,6 @@ export default function App() {
           >
             <div className="mb-8 text-center px-4">
               <h2 className="serif text-[32px] mb-4 leading-tight text-white">Cerita kita tidak berakhir di sini.</h2>
-              <p className="text-[17px] handwriting text-white mb-2 leading-relaxed lowercase">
-                Bagaimana kalau ayahmu juga punya pesan yang tak terkirim?
-              </p>
-              <p className="text-[14px] font-sans text-white/90 mb-8 leading-relaxed mx-auto max-w-[400px]">
-                Buku ini ditulis untuk menjawab pertanyaan yang jarang berani kita tanyakan.
-              </p>
 
               {/* BOOK COVER IMAGE */}
               <div className="w-full max-w-[280px] mb-8 mx-auto shadow-2xl rounded-sm">
@@ -594,33 +589,77 @@ export default function App() {
                 />
               </div>
 
-              {/* PRIMARY ACTIONS - PHONE NUMBER FOR 12% DISCOUNT */}
+              {/* NEW PRIMARY ACTIONS - PHONE NUMBER FOR 20% DISCOUNT & SAMPLE CHAPTER */}
               <div className="w-full max-w-[320px] mx-auto text-left mb-10">
                 <p className="text-[14px] text-white mb-4 leading-relaxed text-center font-sans font-medium">
-                  Masukkan nomor telepon Anda dan nikmati diskon 12%.
+                  Masukkan nomor telepon Anda untuk mendapatkan diskon 20% dan akses membaca cuplikan buku.
                 </p>
                 <div className="flex flex-col mb-4">
                   <label htmlFor="discountPhone" className="text-[10px] uppercase tracking-widest text-white/50 mb-2 font-medium">Nomor Telepon *</label>
-                  <input
-                    id="discountPhone"
-                    name="discountPhone"
-                    type="tel"
-                    placeholder="Contoh: 08123456789"
-                    className="bg-white/5 border-b-thin border-white/20 focus:border-white focus:bg-white/10 outline-none px-4 py-3 text-[14px] rounded-lg transition-all text-white placeholder-white/30 text-center font-sans tracking-wide"
-                    value={discountPhone}
-                    onChange={(e) => setDiscountPhone(e.target.value)}
-                  />
+                  <div className="flex bg-white/5 border-b-thin border-white/20 focus-within:border-white focus-within:bg-white/10 rounded-lg overflow-hidden transition-all">
+                    <div className="relative flex items-center bg-transparent border-r border-white/10 px-3 py-3">
+                      <select
+                        value={countryCode}
+                        onChange={(e) => setCountryCode(e.target.value)}
+                        className="bg-transparent text-white text-[14px] font-sans font-medium outline-none cursor-pointer appearance-none flex items-center gap-1 pr-6"
+                        style={{ colorScheme: 'dark' }}
+                      >
+                        <option value="+62" className="bg-zinc-950 text-white">🇮🇩 +62</option>
+                        <option value="+60" className="bg-zinc-950 text-white">🇲🇾 +60</option>
+                        <option value="+65" className="bg-zinc-950 text-white">🇸🇬 +65</option>
+                        <option value="+61" className="bg-zinc-950 text-white">🇦🇺 +61</option>
+                        <option value="+1" className="bg-zinc-950 text-white">🇺🇸 +1</option>
+                      </select>
+                      <div className="absolute right-2.5 pointer-events-none text-white/40 text-[10px]">
+                        ▼
+                      </div>
+                    </div>
+                    <input
+                      id="discountPhone"
+                      name="discountPhone"
+                      type="tel"
+                      placeholder={countryCode === '+62' ? "Contoh: 08123456789" : "812345678"}
+                      className="bg-transparent outline-none px-4 py-3 text-[14px] transition-all text-white placeholder-white/30 tracking-wide font-sans flex-1"
+                      value={discountPhone}
+                      onChange={(e) => setDiscountPhone(e.target.value.replace(/[^0-9]/g, ''))}
+                    />
+                  </div>
+                  <div className="mt-2 text-center">
+                    <span className="text-[10px] text-white/40 uppercase tracking-widest font-sans">
+                      {!isValidDiscountPhone(discountPhone) 
+                        ? (countryCode === '+62' 
+                            ? "Menunggu nomor telepon valid (Starts 08 / 8, min 9-10 digit)" 
+                            : "Menunggu nomor telepon valid (min 7 digit)")
+                        : "Nomor telepon valid! Fitur terbuka"}
+                    </span>
+                  </div>
                 </div>
-                <button 
-                  className="w-full bg-[#25D366] text-white py-4 rounded-full text-[13px] font-bold tracking-widest uppercase flex items-center justify-center gap-2 hover:opacity-95 transition-all shadow-lg disabled:opacity-30 disabled:cursor-not-allowed"
-                  disabled={!discountPhone.trim()}
-                  onClick={() => window.open(`https://wa.me/6281234567890?text=Halo%2C%20saya%20ingin%20klaim%20voucher%20diskon%2012%25%20buku%20Pesan%20Tak%20Terkirim.%20Nomor%20telepon%20saya%3A%20${encodeURIComponent(discountPhone.trim())}`, '_blank')}
-                >
-                  <svg className="w-4 h-4 shrink-0" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946C.06 5.348 5.397.01 12.008.01c3.202.001 6.212 1.246 8.477 3.514 2.261 2.268 3.502 5.282 3.5 8.487-.004 6.657-5.34 11.997-11.953 11.997-2.005-.001-3.973-.503-5.73-1.458L0 24zm6.59-4.846c1.6.95 3.1 1.45 4.8 1.45 5.6 0 10.2-4.5 10.2-10.2c0-2.7-1.1-5.3-3-7.2-1.9-1.9-4.5-2.9-7.2-2.9-5.6 0-10.2 4.5-10.2 10.2 0 1.9.5 3.7 1.5 5.3l-.9 3.4 3.5-.9zM16.5 13.5c-.3-.1-1.6-.8-1.9-.9-.3-.1-.5-.1-.7.2-.2.3-.7.9-.9 1.1-.2.2-.3.2-.6.1-.3-.1-1.2-.5-2.3-1.4-.9-.8-1.5-1.7-1.7-2-.2-.3 0-.5.1-.6s.3-.3.4-.5c.2-.2.2-.3.3-.5.1-.2 0-.4-.1-.5-.1-.1-.7-1.6-.9-2.1-.3-.7-.5-.6-.7-.6h-.6c-.2 0-.5.1-.7.4-.3.3-1 1-1 2.4s1 2.8 1.1 3c.1.2 2 3.1 4.9 4.3.7.3 1.2.5 1.6.6.7.2 1.3.2 1.8.1.6-.1 1.6-.7 1.9-1.3.2-.7.2-1.2.2-1.3-.1-.3-.3-.4-.6-.5z"/>
-                  </svg>
-                  Klaim Diskon via WhatsApp →
-                </button>
+
+                <div className="flex flex-col gap-3">
+                  <button 
+                    className="w-full bg-[#25D366] text-white py-4 rounded-full text-[13px] font-bold tracking-widest uppercase flex items-center justify-center gap-2 hover:opacity-95 hover:scale-[1.02] active:scale-[0.98] transition-all shadow-lg disabled:opacity-50 disabled:cursor-not-allowed disabled:scale-100"
+                    disabled={!isValidDiscountPhone(discountPhone)}
+                    onClick={() => {
+                      const message = `Halo Ayah Paruh Waktu! Saya ingin mengklaim Voucher Diskon 20% (PESANAPW20) untuk pembelian Buku Pesan Tak Terkirim. Nomor telepon saya: ${countryCode} ${discountPhone}`;
+                      window.open(`https://wa.me/6281327558186?text=${encodeURIComponent(message)}`, '_blank');
+                    }}
+                  >
+                    <svg className="w-4 h-4 shrink-0" fill="currentColor" viewBox="0 0 24 24">
+                      <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946C.06 5.348 5.397.01 12.008.01c3.202.001 6.212 1.246 8.477 3.514 2.261 2.268 3.502 5.282 3.5 8.487-.004 6.657-5.34 11.997-11.953 11.997-2.005-.001-3.973-.503-5.73-1.458L0 24zm6.59-4.846c1.6.95 3.1 1.45 4.8 1.45 5.6 0 10.2-4.5 10.2-10.2c0-2.7-1.1-5.3-3-7.2-1.9-1.9-4.5-2.9-7.2-2.9-5.6 0-10.2 4.5-10.2 10.2 0 1.9.5 3.7 1.5 5.3l-.9 3.4 3.5-.9zM16.5 13.5c-.3-.1-1.6-.8-1.9-.9-.3-.1-.5-.1-.7.2-.2.3-.7.9-.9 1.1-.2.2-.3.2-.6.1-.3-.1-1.2-.5-2.3-1.4-.9-.8-1.5-1.7-1.7-2-.2-.3 0-.5.1-.6s.3-.3.4-.5c.2-.2.2-.3.3-.5.1-.2 0-.4-.1-.5-.1-.1-.7-1.6-.9-2.1-.3-.7-.5-.6-.7-.6h-.6c-.2 0-.5.1-.7.4-.3.3-1 1-1 2.4s1 2.8 1.1 3c.1.2 2 3.1 4.9 4.3.7.3 1.2.5 1.6.6.7.2 1.3.2 1.8.1.6-.1 1.6-.7 1.9-1.3.2-.7.2-1.2.2-1.3-.1-.3-.3-.4-.6-.5z"/>
+                    </svg>
+                    Klaim Voucher Diskon 20%
+                  </button>
+
+                  <button 
+                    className="w-full bg-white text-brand-bg py-4 rounded-full text-[13px] font-bold tracking-widest uppercase flex items-center justify-center gap-2 hover:bg-white/95 hover:scale-[1.02] active:scale-[0.98] transition-all shadow-lg disabled:opacity-50 disabled:cursor-not-allowed disabled:scale-100"
+                    disabled={!isValidDiscountPhone(discountPhone)}
+                    onClick={() => {
+                      window.open('https://drive.google.com/file/d/1qbHuIdaTqqMivk1g-DXOQsbC6e_BH40k/view?usp=sharing', '_blank');
+                    }}
+                  >
+                    Baca Sample Chapter
+                  </button>
+                </div>
               </div>
 
               <div className="w-full h-[0.5px] bg-white opacity-20 mb-8"></div>
@@ -662,6 +701,212 @@ export default function App() {
                 Lihat Arsip →
               </button>
             </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* MODAL: CLAIM VOUCHER DISKON 20% */}
+      <AnimatePresence>
+        {showVoucherModal && (
+          <motion.div 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 bg-brand-bg/95 backdrop-blur-md z-50 flex items-center justify-center p-4"
+          >
+            <motion.div 
+              initial={{ scale: 0.9, y: 20 }}
+              animate={{ scale: 1, y: 0 }}
+              exit={{ scale: 0.9, y: 20 }}
+              className="bg-zinc-900 border border-white/10 rounded-2xl p-6 md:p-8 max-w-[400px] w-full text-center relative shadow-2xl"
+            >
+              {/* Close Button */}
+              <button 
+                onClick={() => {
+                  setShowVoucherModal(false);
+                  setCopied(false);
+                }}
+                className="absolute top-4 right-4 text-white/60 hover:text-white text-lg p-2 transition-colors"
+                aria-label="Close"
+              >
+                ✕
+              </button>
+
+              <div className="mb-6 flex justify-center">
+                <div className="w-12 h-12 rounded-full bg-[#25D366]/10 flex items-center justify-center text-[#25D366]">
+                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                </div>
+              </div>
+
+              <h3 className="serif text-[24px] text-white mb-2 leading-tight">Diskon 20% Terbuka!</h3>
+              <p className="text-[13px] text-white/70 mb-6 leading-relaxed">
+                Gunakan kode voucher di bawah ini untuk mendapatkan potongan harga spesial 20% saat memesan Buku Pesan Tak Terkirim.
+              </p>
+
+              {/* Virtual Coupon */}
+              <div className="border border-dashed border-white/20 bg-white/5 rounded-xl p-4 mb-6 relative overflow-hidden">
+                <span className="text-[10px] uppercase tracking-widest text-white/40 block mb-1">Kode Voucher Anda</span>
+                <span className="text-[20px] font-mono font-bold text-white tracking-widest block select-all">PESANAPW20</span>
+                <button
+                  onClick={() => {
+                    navigator.clipboard.writeText('PESANAPW20');
+                    setCopied(true);
+                    setTimeout(() => setCopied(false), 2000);
+                  }}
+                  className="mt-3 text-[11px] underline text-white/80 hover:text-white transition-all font-medium uppercase tracking-wider block mx-auto"
+                >
+                  {copied ? '✓ Kode Tersalin!' : 'Salin Kode Kupon'}
+                </button>
+              </div>
+
+              <div className="flex flex-col gap-3">
+                <button
+                  onClick={() => {
+                    const phoneSuffix = discountPhone ? ` (${discountPhone})` : '';
+                    const message = `Halo Ayah Paruh Waktu! Saya ingin mengklaim Voucher Diskon 20% (PESANAPW20) untuk pembelian Buku Pesan Tak Terkirim.${phoneSuffix ? ` Nomor telepon saya: ${phoneSuffix}` : ''}`;
+                    window.open(`https://wa.me/6281327558186?text=${encodeURIComponent(message)}`, '_blank');
+                  }}
+                  className="w-full bg-[#25D366] text-white py-4 rounded-full text-[13px] font-bold tracking-widest uppercase flex items-center justify-center gap-2 hover:opacity-95 transition-all shadow-lg"
+                >
+                  Klaim via WhatsApp →
+                </button>
+                <button
+                  onClick={() => {
+                    setShowVoucherModal(false);
+                    setCopied(false);
+                  }}
+                  className="w-full py-3 text-[12px] text-white/50 hover:text-white/80 transition-colors uppercase tracking-wider font-medium"
+                >
+                  Tutup
+                </button>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* MODAL: INLINE SAMPLE CHAPTER READER */}
+      <AnimatePresence>
+        {showSampleChapter && (
+          <motion.div 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 bg-brand-bg/95 backdrop-blur-md z-50 flex items-center justify-center p-4"
+          >
+            <motion.div 
+              initial={{ scale: 0.9, y: 20 }}
+              animate={{ scale: 1, y: 0 }}
+              exit={{ scale: 0.9, y: 20 }}
+              className="bg-zinc-900 border border-white/10 rounded-2xl p-6 md:p-8 max-w-[600px] w-full text-left relative shadow-2xl flex flex-col max-h-[90vh]"
+            >
+              {/* Header */}
+              <div className="flex justify-between items-center pb-4 border-b border-white/10 mb-4 shrink-0">
+                <div>
+                  <h3 className="serif text-[20px] text-white">Sample Chapter: Pesan Tak Terkirim</h3>
+                  <p className="text-[11px] text-white/50 uppercase tracking-widest font-sans mt-0.5">Oleh Ayah Paruh Waktu</p>
+                </div>
+                <button 
+                  onClick={() => {
+                    setShowSampleChapter(false);
+                    setReadingPage(1);
+                  }}
+                  className="text-white/60 hover:text-white text-lg p-2 transition-colors"
+                  aria-label="Close"
+                >
+                  ✕
+                </button>
+              </div>
+
+              {/* Digital Reader content pages */}
+              <div className="flex-1 overflow-y-auto mb-6 pr-1 font-serif scrollbar-thin scrollbar-thumb-white/10 scrollbar-track-transparent">
+                {readingPage === 1 && (
+                  <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-4">
+                    <h4 className="text-[20px] text-white text-center pb-4 border-b border-white/5 serif italic">
+                      Bab I: Sunyi Antara Kita
+                    </h4>
+                    <p className="text-[15px] leading-relaxed text-white/90 text-justify">
+                      Di ujung malam yang sepi, draf pesan itu masih tersimpan utuh di sanubari. Puluhan kalimat bersahutan di kepalaku, tapi tak satu pun yang kuberanikan meluncur ke layar ponselmu. "Kapan pulang, Yah?" atau sekadar "Sehat selalu ya di sana." Antara anak dan ayah, ada ribuan hal yang terperangkap dalam genggaman bisu.
+                    </p>
+                    <p className="text-[15px] leading-relaxed text-white/90 text-justify">
+                      Kita dibesarkan oleh keheningan yang mengalir tanpa rekayasa. Aku mengingat cara Ayah duduk di teras, memandangi langit malam dengan kepulan asap rokok yang perlahan memudar. Tidak banyak kata yang diucapkan, namun dalam sunyi itu, aku mengerti bebannya begitu berat.
+                    </p>
+                  </motion.div>
+                )}
+
+                {readingPage === 2 && (
+                  <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-4">
+                    <h4 className="text-[20px] text-white text-center pb-4 border-b border-white/5 serif italic">
+                      Bab II: Bahasa Isyarat Kasih Sayang
+                    </h4>
+                    <p className="text-[15px] leading-relaxed text-white/90 text-justify">
+                      Kita belajar menyayangi lewat isyarat. Dari deham tenang Ayah saat membaca koran, atau suara mesin motor yang sengaja dinyalakan lebih awal agar sekiranya aku terbangun bersiap sekolah. Kedekatan kita tidak diukur dengan kalimat cinta, tetapi dengan ruang hening yang saling menjaga.
+                    </p>
+                    <p className="text-[15px] leading-relaxed text-white/90 text-justify">
+                      Ketika aku terjatuh, Ayah tidak buru-buru memelukku. Beliau berdiri beberapa langkah, menatapku dengan mata yang berbicara: "Bangkit, anakku." Saat itu aku mengira Ayah dingin. Kini, ketika dunia menghantamku tanpa ampun, barulah aku paham arti ketangguhan yang ia tanamkan sejak dini.
+                    </p>
+                  </motion.div>
+                )}
+
+                {readingPage === 3 && (
+                  <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-4">
+                    <h4 className="text-[20px] text-white text-center pb-4 border-b border-white/5 serif italic">
+                      Bab III: Rekonsiliasi Rasa
+                    </h4>
+                    <p className="text-[15px] leading-relaxed text-white/90 text-justify">
+                      Kini ketika aku tumbuh dewasa, aku mulai melihat gurat lelah yang sama pada bayanganku di cermin. Sifat keras kepala, ketidakmampuan mengungkapkan letupan duka, dan segala kebisuan ini... Ternyata aku perlahan-lahan sedang menyerupai sosok yang selama ini tak pernah sepenuhnya kupahami.
+                    </p>
+                    <p className="text-[15px] leading-relaxed text-white/90 text-justify">
+                      Buku ini dikompilasi dari ribuan desah napas, draf-draf pesan whatsapp yang urung dikirim, dan surat-surat kertas yang menguning di dalam laci. Untukmu Ayah, dimanapun raga dan jiwamu kini bersandar, pesan-pesan ini akhirnya menemukan jalannya untuk terkirim.
+                    </p>
+                  </motion.div>
+                )}
+              </div>
+
+              {/* Pagination controls & Open original PDF tab */}
+              <div className="shrink-0 flex flex-col gap-4 border-t border-white/10 pt-4">
+                <div className="flex justify-between items-center text-[12px]">
+                  <button 
+                    onClick={() => setReadingPage(prev => Math.max(1, prev - 1))}
+                    disabled={readingPage === 1}
+                    className="px-4 py-2 bg-white/5 text-white rounded-md hover:bg-white/10 disabled:opacity-20 disabled:cursor-not-allowed transition-colors"
+                  >
+                    ← Sebelumnya
+                  </button>
+                  <span className="font-mono text-white/60">Halaman {readingPage} dari 3</span>
+                  <button 
+                    onClick={() => setReadingPage(prev => Math.min(3, prev + 1))}
+                    disabled={readingPage === 3}
+                    className="px-4 py-2 bg-white/5 text-white rounded-md hover:bg-white/10 disabled:opacity-20 disabled:cursor-not-allowed transition-colors"
+                  >
+                    Selanjutnya →
+                  </button>
+                </div>
+
+                <div className="flex flex-col sm:flex-row gap-2.5">
+                  <button
+                    onClick={() => window.open('https://res.cloudinary.com/dkhf63xbe/image/upload/v1778053561/apwbook_sample_chapter_t8f921.pdf', '_blank')}
+                    className="flex-1 bg-white hover:bg-white/90 text-[#121212] py-3 rounded-full text-[12px] font-bold tracking-wider uppercase text-center flex items-center justify-center gap-2 transition-colors shadow-lg"
+                  >
+                    <svg className="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                    </svg>
+                    Buka PDF Asli (Tab Baru)
+                  </button>
+                  <button
+                    onClick={() => {
+                      setShowSampleChapter(false);
+                      setReadingPage(1);
+                    }}
+                    className="sm:flex-none px-6 py-3 border border-white/20 text-white hover:bg-white/5 text-[12px] rounded-full uppercase tracking-wider font-semibold transition-colors"
+                  >
+                    Tutup
+                  </button>
+                </div>
+              </div>
+            </motion.div>
           </motion.div>
         )}
       </AnimatePresence>
